@@ -1,49 +1,51 @@
 # Airtibe-MMT-Assignment Solution
 
 ## Project Brief
-Bookmyshow is a ticketing platform where you can book tickets for a movie show. The image attached represents that for a given theatre we can see the next 7 dates. As one chooses the date, we get list of all shows running in that theatre along with the show timings.
+Bookmyshow is a ticketing platform where you can book tickets for a movie show. The image attached represents that for a given theatre we can see the next 7 dates. As one chooses the date, we get list of movies and their respective show timings.
 
-P1 - As part of this assignment, we need to list down all the entities, their attributes and the table structures for the scenario mentioned in the previous slide. You also need to write the SQL queries required to create these tables along with few sample entries. Ensure the tables follow 1NF, 2NF, 3NF and BCNF rules.
+**P1** - As part of this assignment, we need to list down all the entities, their attributes and the table structures for the scenario mentioned in the previous slide. You also need to write the SQL queries for the given problems.
 
-1. Tables and Attributes
+---
+
+## 1. Tables and Attributes
 
 The database follows BCNF normalization rules, separating the entities to prevent data redundancy.
 
-**Theatres**: Stores the physical cinema locations.
+### Theatres
+Stores the physical cinema locations.
 
-* theatre_id (INT, Primary Key)
+| Column | Type | Constraint |
+|--------|------|-----------|
+| theatre_id | INT | Primary Key |
+| name | VARCHAR | NOT NULL |
 
-* name (VARCHAR)
+### Movies
+Stores details specific to the films.
 
-**Movies**: Stores details specific to the films.
+| Column | Type | Constraint |
+|--------|------|-----------|
+| movie_id | INT | Primary Key |
+| title | VARCHAR | NOT NULL |
+| certification | VARCHAR | - |
+| language | VARCHAR | - |
+| format | VARCHAR | - |
 
-* movie_id (INT, Primary Key)
+### Shows
+The junction table mapping movies to theatres at specific times, including the technical screening details.
 
-* title (VARCHAR)
+| Column | Type | Constraint |
+|--------|------|-----------|
+| show_id | INT | Primary Key |
+| theatre_id | INT | Foreign Key → Theatres(theatre_id) |
+| movie_id | INT | Foreign Key → Movies(movie_id) |
+| show_date | DATE | - |
+| show_time | TIME | - |
+| audio_specs | VARCHAR | - |
+| subtitle_lang | VARCHAR | - |
 
-* certification (VARCHAR) - e.g., UA, A
+---
 
-* language (VARCHAR)
-
-* format (VARCHAR) - e.g., 2D, 3D
-
-**Shows**: The junction table mapping movies to theatres at specific times, including the technical screening details.
-
-* show_id (INT, Primary Key)
-
-* theatre_id (INT, Foreign Key referencing Theatres)
-
-* movie_id (INT, Foreign Key referencing Movies)
-
-* show_date (DATE)
-
-* show_time (TIME)
-
-* audio_specs (VARCHAR)
-
-* subtitle_lang (VARCHAR)
-
-  2. Normalization Check
+## 2. Normalization Check
 
 The schema design adheres to the standard normal forms to ensure data integrity:
 
@@ -55,37 +57,35 @@ The schema design adheres to the standard normal forms to ensure data integrity:
 
 **BCNF**: For every non-trivial functional dependency X→Y, X is a superkey. Every determinant in these tables is a primary key, strictly fulfilling Boyce-Codd Normal Form requirements.
 
-3. Example Rows
+---
 
-Theatres Table
+## 3. Example Rows
 
------------------------------------------------
-|theatre_id	| name |
------------------------------------------------
-|1	| PVR: Nexus (Formerly Forum), Koramangala |
-------------------------------------------------
+### Theatres Table
 
-Movies Table
+| theatre_id | name |
+|---|---|
+| 1 | PVR: Nexus (Formerly Forum), Koramangala |
 
--------------------------------------------------------
-|movie_id	| title	| certification	| language	|format |
--------------------------------------------------------
-|1	|Dasara	|UA	|Telugu	|2D|
-|2	|Kisi Ka Bhai Kisi Ki Jaan	|UA	| Hindi	|2D |
--------------------------------------------------------
+### Movies Table
 
-Shows Table
+| movie_id | title | certification | language | format |
+|---|---|---|---|---|
+| 1 | Dasara | UA | Telugu | 2D |
+| 2 | Kisi Ka Bhai Kisi Ki Jaan | UA | Hindi | 2D |
 
-----------------------------------------------------------------------------
-| show_id |	theatre_id |	movie_id |	show_date	|show_time|	audio_specs|	subtitle_lang |
------------------------------------------------------------------------------------------
-| 101	|        1	|            1	|  2023-04-25 |	12:15:00 |	4K Dolby 7.1	| ENG |
-|102	 |1	|2	|2023-04-25	| 13:00:00	|4K ATMOS	|ENG |
--------------------------------------------------------------------------------------------
+### Shows Table
 
-4. P1 Solution: Schema Creation and Sample Data (MySQL)
+| show_id | theatre_id | movie_id | show_date | show_time | audio_specs | subtitle_lang |
+|---|---|---|---|---|---|---|
+| 101 | 1 | 1 | 2023-04-25 | 12:15:00 | 4K Dolby 7.1 | ENG |
+| 102 | 1 | 2 | 2023-04-25 | 13:00:00 | 4K ATMOS | ENG |
 
-'''SQL
+---
+
+## 4. P1 Solution: Schema Creation and Sample Data (MySQL)
+
+```sql
 -- Create Theatres Table
 CREATE TABLE Theatres (
     theatre_id INT PRIMARY KEY,
