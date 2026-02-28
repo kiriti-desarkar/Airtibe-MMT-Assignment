@@ -155,5 +155,4 @@ JOIN Theatres t ON s.theatre_id = t.theatre_id
 WHERE t.name = 'PVR: Nexus (Formerly Forum), Koramangala' 
   AND s.show_date = '2023-04-25'
 ORDER BY m.title, s.show_time;
-Would you like me to draft a brief setup guide to include at the bottom of the document so reviewers know exactly how to run this SQL in their local environments?
 '''
